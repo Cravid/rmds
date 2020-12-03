@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage="$(basename "$0") OPTIONS <root> -- remove .DS_Store files recursively
+
+OPTIONS:
+    -h          Show this help message
+
+FUNCTION:
+    root        Root folder to start from
+"
+usage() {
+    echo "$usage"
+    exit 1
+}
+
+while getopts ':h' option; do
+    case "$option" in
+        h) usage;;
+        \?) printf "illegal option: -%s\n" "$OPTARG" >&2; usage;;
+    esac
+done
+
+if [ $# -ne 1 ]; then printf "$usage"; exit; fi
+shift $((OPTIND - 1))
+
+##
+
+find $1 -name '*.DS_Store' -type f -delete -print
+
+exit $?
+
+
+
