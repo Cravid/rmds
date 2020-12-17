@@ -21,12 +21,19 @@ while getopts ':h' option; do
     esac
 done
 
-if [ $# -ne 1 ]; then printf "$usage"; exit; fi
-shift $((OPTIND - 1))
+ROOT=
+
+if [ $# -gt 1 ]; then
+    usage
+elif [ $# -eq 1 ] && [ ! -z $1 ]; then
+    ROOT=$1
+else
+    ROOT=.
+fi
 
 ##
 
-find $1 -name '*.DS_Store' -type f -delete -print
+find $ROOT -name '*.DS_Store' -type f -delete -print
 
 exit $?
 
